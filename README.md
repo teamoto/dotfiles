@@ -1,1 +1,2 @@
-# dotfiles
+# Personal dotfiles such as .vim, .vimrc, .bash_profiles, etc...
+There is also a bash script to create a symboric link under ~/
