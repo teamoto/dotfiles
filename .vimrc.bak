@@ -62,7 +62,6 @@ endif
 set laststatus=2
 "" Chagne cursor background
 set cursorline
-set cursorcolumn
 "" Show line number
 set number
 "" Make sure to show 4 lines above and below of the current line
