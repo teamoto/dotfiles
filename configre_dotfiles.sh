@@ -64,6 +64,28 @@ function backup_dotfiles() {
 
 }
 
+function is_installed() {
+    # Check if a command is installed.
+    local command="$1"
+    if command -v "${command}" &> /dev/null; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function configure_vim() {
+    if is_installed "vim"; then
+        if ln -s "${DOTFILES_DIR}/.vimrc" "${HOME}/.vimrc"; then
+            info "Created a symbolic link to the .vimrc file."
+        else
+                warn "Failed to create a symbolic link to the .vimrc file. The file already exists."
+        fi
+    else
+        warn "Vim is not installed."
+    fi
+}
+
 # Main function to configure the dotfiles.
 function main() {
     # Create the dotfiles directory if it does not exist.
@@ -85,11 +107,8 @@ function main() {
     cp -r "${SCRIPT_DIR}/dotfiles/." "${DOTFILES_DIR}/"
 
     # Create symbolic links to the dotfiles.
-    if ln -s "${DOTFILES_DIR}/.vimrc" "${HOME}/.vimrc"; then
-        info "Created a symbolic link to the .vimrc file."
-    else
-        warn "Failed to create a symbolic link to the .vimrc file. The file already exists."
-    fi
+    
+    configure_vim
 }
 
 main "$@"
