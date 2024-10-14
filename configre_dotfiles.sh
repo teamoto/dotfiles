@@ -5,7 +5,8 @@ set -euo pipefail
 # Environment variables
 ## Change these variables to suit your needs.
 BACKUP_RETENTION=7
-
+## Should you need to use any tmux plugins, ensure to set the TMUX_PLUGIN_MANAGER variable.
+TMUX_PLUGIN_MANAGER="tmux-plugins/tpm"
 
 ## Do not change these variables.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -64,6 +65,61 @@ function backup_dotfiles() {
 
 }
 
+function is_installed() {
+    # Check if a command is installed.
+    local command="$1"
+    if command -v "${command}" &> /dev/null; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Vim
+function configure_vim() {
+    if is_installed "vim"; then
+        if ln -s "${DOTFILES_DIR}/.vimrc" "${HOME}/.vimrc"; then
+            info "Created a symbolic link to the .vimrc file."
+        else
+                warn "Failed to create a symbolic link to the .vimrc file. The file already exists."
+        fi
+    else
+        warn "Vim is not installed."
+    fi
+}
+
+# Tmux
+## Tmux plugins
+function install_tmux_plugins() {
+    if ! is_installed "tmux" && ! is_installed "git"; then
+        warn "Tmux or git is not installed."
+        return 0
+    fi
+    if [[ ! -z "${TMUX_PLUGIN_MANAGER}" ]]; then
+        if [[ ! -d "${HOME}/.tmux/plugins/tpm" ]]; then
+            info "Cloning the tmux plugin manager..."
+            git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+        fi
+    fi
+    
+}
+
+## Tmux configuration
+function configure_tmux() {
+    if is_installed "tmux"; then
+        if ln -s "${DOTFILES_DIR}/.tmux.conf" "${HOME}/.tmux.conf"; then
+            info "Created a symbolic link to the .tmux.conf file."
+        else
+            warn "Failed to create a symbolic link to the .tmux.conf file. The file already exists."
+        fi
+    else
+        warn "Tmux is not installed."
+        return 0
+    fi
+    install_tmux_plugins
+    tmux source "${HOME}/.tmux.conf"
+}
+
 # Main function to configure the dotfiles.
 function main() {
     # Create the dotfiles directory if it does not exist.
@@ -85,11 +141,11 @@ function main() {
     cp -r "${SCRIPT_DIR}/dotfiles/." "${DOTFILES_DIR}/"
 
     # Create symbolic links to the dotfiles.
-    if ln -s "${DOTFILES_DIR}/.vimrc" "${HOME}/.vimrc"; then
-        info "Created a symbolic link to the .vimrc file."
-    else
-        warn "Failed to create a symbolic link to the .vimrc file. The file already exists."
-    fi
+    
+    configure_vim
+    configure_tmux
+
+    info "Dotfiles configuration successfully complated."
 }
 
 main "$@"
