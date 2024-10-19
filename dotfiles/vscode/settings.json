@@ -1,0 +1,69 @@
+{
+  // General Settings
+  "debug.console.fontSize": 16,
+  "window.zoomLevel": 0,
+  "debug.console.fontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+  "terminal.integrated.fontSize": 16,
+  "terminal.integrated.fontWeight": "600",
+  "workbench.colorTheme": "Ayu Mirage",
+  "workbench.iconTheme": "ayu",
+  "workbench.settings.openDefaultKeybindings": true,
+  "workbench.settings.openDefaultSettings": true,
+  "workbench.settings.useSplitJSON": true,
+  "workbench.settings.editor": "json",
+  "workbench.list.smoothScrolling": true,
+  "workbench.tree.renderIndentGuides": "always",
+  "workbench.tree.indent": 16,
+  "editor.fontSize": 16,
+  "editor.tabSize": 4,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.fontWeight": "500",
+  "editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+  "editor.renderControlCharacters": true,
+  "editor.suggestSelection": "first",
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.cursorStyle": "line",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.renderWhitespace": "all",
+  "editor.showFoldingControls": "all",
+  "editor.tokenColorCustomizations": {
+    "comments": "#3b7c31"
+  },
+  "editor.minimap.enabled": false,
+  "editor.formatOnType": true,
+  "editor.wordWrap": "on",
+  "files.autoSave": "afterDelay",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.autoGuessEncoding": true,
+
+  // Python settings
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+
+  // Plaintext settings
+  "[plaintext]": {
+    "editor.quickSuggestions": {
+      "other": false,
+      "comments": false,
+      "strings": false
+    }
+  },
+
+  // git and github settings
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": true,
+    "markdown": true,
+    "scminput": false
+  },
+  "git.autofetch": true,
+
+  "explorer.confirmDelete": false
+}
