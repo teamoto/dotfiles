@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# Configure bash prompt as follows:
+# [Username][PWD][Git branch if in a git repo]
+# $
+
+# Environment variables
+USER_COLOR="\[\e[48;5;34m\]"       # Green background
+PATH_COLOR="\[\e[48;5;33m\]"       # Blue background
+GIT_COLOR="\[\e[48;5;31m\]"        # Red background
+RESET_COLOR="\[\e[0m\]"            # Reset to default color
+
+
+# Functions
+# Function to get the current git branch
+# Instruction
+function colorize_usage() {
+    echo "Usage: colorize <color> <text> [is_bold]"
+    echo "  color: The color to use for the text"
+    echo "  text: The text to colorize"
+    echo "  is_bold: Optional. If set, the text will be bold. Values: true or false."
+}
+
+function colorize() {
+    local color=$1
+    local text=$2
+    local bold=""
+    local is_bold=$3 # Optional
+    is_bold=${is_bold:-false}
+
+    # Check if any arguments are empty
+    if [[ -z "${color}" ]] || [[ -z "${text}" ]]; then
+        colorize_usage
+        exit 1
+    fi
+
+    if [[ "${is_bold}" == "true" ]]; then
+        bold="\[\e[1m\]"
+    fi
+    echo "${bold}\[\e[48;5;${color}m\]${text}\[\e[0m\]"
+}
+
+function get_git_branch() {
+    # If a given directory contains a git repository, print the current branch. Otherwise, print nothing.
+    echo $(git branch  --no-color 2>/dev/null | grep '^\*' | awk '{print $2}' || echo "")
+}
+
+function echo_user() {
+    colorize "34" "[${USER}]" "true"
+}
+
+function echo_path() {
+    colorize "33" "[\w]" "true"
+}
+
+function echo_git_branch() {
+    colorize "31" "\$(get_git_branch)" "true"
+}
+
+function export_bash_prompt() {
+    export PS1="$(echo_user)$(echo_path)$(echo_git_branch)\n\[\e[1m\]\$ "
+    # export PS1='\[\e[1m\]\[\e[48;5;34m\][tatsuya.emoto]\[\e[0m\]\[\e[1m\]\[\e[48;5;33m\][\w]\[\e[0m\]\[\e[1m\]\[\e[48;5;31m\]$(get_git_branch)\[\e[0m\]\n\[\e[1m\]$ '
+}
+
+export_bash_prompt
