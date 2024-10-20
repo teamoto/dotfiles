@@ -54,12 +54,12 @@ function echo_path() {
 }
 
 function echo_git_branch() {
-    colorize "31" "\$(get_git_branch)" "true"
+    colorize "31" "[\$(get_git_branch)]" "true"
 }
 
 function export_bash_prompt() {
     export PS1="$(echo_user)$(echo_path)$(echo_git_branch)\n\[\e[1m\]\$ "
-    # export PS1='\[\e[1m\]\[\e[48;5;34m\][tatsuya.emoto]\[\e[0m\]\[\e[1m\]\[\e[48;5;33m\][\w]\[\e[0m\]\[\e[1m\]\[\e[48;5;31m\]$(get_git_branch)\[\e[0m\]\n\[\e[1m\]$ '
+    # export PS1='\[\e[1m\]\[\e[48;5;34m\][username]\[\e[0m\]\[\e[1m\]\[\e[48;5;33m\][\w]\[\e[0m\]\[\e[1m\]\[\e[48;5;31m\]$(get_git_branch)\[\e[0m\]\n\[\e[1m\]$ '
 }
 
 export_bash_prompt
