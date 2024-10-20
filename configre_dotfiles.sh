@@ -65,6 +65,24 @@ function backup_dotfiles() {
 
 }
 
+# bashrc
+function configure_bashrc() {
+    if ln -s "${DOTFILES_DIR}/.bashrc" "${HOME}/.bashrc"; then
+        info "Created a symbolic link to the .bashrc file."
+    else
+        warn "Failed to create a symbolic link to the .bashrc file. The file already exists."
+    fi
+}
+
+# bash_prompt
+function configure_bash_prompt() {
+    if ln -s "${DOTFILES_DIR}/.bash_prompt" "${HOME}/.bash_prompt"; then
+        info "Created a symbolic link to the .bash_prompt file."
+    else
+        warn "Failed to create a symbolic link to the .bash_prompt file. The file already exists."
+    fi
+}
+
 # Vim
 function configure_vim() {
     if is_installed "vim"; then
@@ -107,7 +125,9 @@ function configure_tmux() {
         return 0
     fi
     install_tmux_plugins
-    tmux source "${HOME}/.tmux.conf"
+    # Reload the tmux configuration if tmux is currently running.
+    tmux list-sessions &>/dev/null && tmux source "${HOME}/.tmux.conf" || true
+
 }
 
 # vscode
@@ -194,7 +214,6 @@ function configure_vscode() {
 
 }
 
-
 # Main
 ## Main function to configure the dotfiles.
 function main() {
@@ -217,7 +236,8 @@ function main() {
     cp -r "${SCRIPT_DIR}/dotfiles/." "${DOTFILES_DIR}/"
 
     # Create symbolic links to the dotfiles.
-
+    configure_bashrc
+    configure_bash_prompt
     configure_vim
     configure_tmux
     configure_vscode
