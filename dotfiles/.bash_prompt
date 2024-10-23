@@ -54,6 +54,7 @@ function echo_path() {
 }
 
 function echo_git_branch() {
+    local branch=$(get_git_branch)
     colorize "31" "[\$(get_git_branch)]" "true"
 }
 
